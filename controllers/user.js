@@ -9,14 +9,14 @@ const controller = {
             const user = await userModel.findOne({ email });
 
             if (!user) {
-                return res.status(500).json({
+                return res.status(404).json({
                     message: 'Your login info is incorrect.',
                 });
             }
 
             const checkPassword = bcrypt.compareSync(password, user.password);
             if (!checkPassword) {
-                return res.status(500).json({
+                return res.status(404).json({
                     message: 'Your password is in correct.',
                 });
             }
@@ -25,7 +25,7 @@ const controller = {
                 message: 'OK',
             });
         } catch (error) {
-            return res.status(500).json({
+            return res.status(404).json({
                 message: 'Error.',
             });
         }
@@ -37,13 +37,13 @@ const controller = {
             const user = await userModel.findOne({ email });
 
             if (user) {
-                return res.status(500).json({
+                return res.status(404).json({
                     message: 'Email has been registered.',
                 });
             }
 
             if (password.length < 8 || password.length > 64) {
-                return res.status(500).json({
+                return res.status(404).json({
                     message: 'Password length must between 8 and 64 characters.',
                 });
             }
@@ -59,7 +59,7 @@ const controller = {
             });
 
         } catch (error) {
-            return res.status(500).json({
+            return res.status(404).json({
                 message: 'Error.',
             });
         }

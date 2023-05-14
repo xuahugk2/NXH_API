@@ -1,15 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import userRouter from './routes/user.js';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-app.use('/', (req, res) => {
-    res.send('Hello.');
-});
+// Authentication
+app.use('/api', userRouter);
 
 mongoose.connect(process.env.DATABASE_URL);
 mongoose.connection.once('connected', () => {

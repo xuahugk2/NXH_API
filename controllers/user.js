@@ -9,24 +9,22 @@ const controller = {
             const user = await userModel.findOne({ email });
 
             if (!user) {
-                return res.status(404).json({
+                return res.status(500).json({
                     message: 'Your login info is incorrect.',
                 });
             }
 
             const checkPassword = bcrypt.compareSync(password, user.password);
             if (!checkPassword) {
-                return res.status(404).json({
+                return res.status(503).json({
                     message: 'Your password is in correct.',
                 });
             }
 
-            return res.status(200).json({
-                message: 'OK',
-            });
+            return res.status(200).json(user);
         } catch (error) {
-            return res.status(404).json({
-                message: 'Error.',
+            return res.status(500).json({
+                message: 'Login failed.',
             });
         }
     },
@@ -37,13 +35,13 @@ const controller = {
             const user = await userModel.findOne({ email });
 
             if (user) {
-                return res.status(404).json({
+                return res.status(503).json({
                     message: 'Email has been registered.',
                 });
             }
 
             if (password.length < 8 || password.length > 64) {
-                return res.status(404).json({
+                return res.status(503).json({
                     message: 'Password length must between 8 and 64 characters.',
                 });
             }
@@ -54,13 +52,11 @@ const controller = {
 
             await newUser.save();
 
-            return res.status(200).json({
-                message: 'New user has been created.',
-            });
+            return res.status(200).json(newUser);
 
         } catch (error) {
-            return res.status(404).json({
-                message: 'Error.',
+            return res.status(500).json({
+                message: 'Register failed.',
             });
         }
     },

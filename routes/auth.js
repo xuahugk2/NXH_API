@@ -9,4 +9,7 @@ router.route('/login')
 router.route('/register')
     .post(controller.register);
 
+router.route('/forgot-password')
+    .post(controller.forgotPwd);
+
 export default router;

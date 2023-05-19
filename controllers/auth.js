@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import userModel from '../models/user.js';
+import { sendMail } from '../utils/sendMailUtil.js';
 
 const controller = {
     login: async (req, res) => {
@@ -60,6 +61,30 @@ const controller = {
             });
         }
     },
+    forgotPwd: async (req, res) => {
+        try {
+            const { email } = req.body;
+
+            const user = await userModel.findOne({ email });
+
+            if (!user) {
+                return res.status(500).json({
+                    message: 'Your email is not exists.',
+                });
+            }
+
+            const { status, message } = await sendMail();
+
+            return res.status(status).json({
+                message,
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Reset password failed.',
+            });
+        }
+    }
 };
 
 export default controller;

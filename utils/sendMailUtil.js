@@ -22,12 +22,19 @@ export const sendMail = async () => {
             html: "Test content"
         }
 
-        await transporter.sendMail(options)
-
-        return {
-            status: 200,
-            message: 'Please, check your to reset the password.'
-        }
+        transporter.sendMail(options, (err, info) => {
+            console.log({ err, info });
+            if (err) {
+                return {
+                    status: 503,
+                    message: 'Reset password failed.'
+                };
+            }
+            return {
+                status: 200,
+                message: 'Please, check your email to reset the password.'
+            };
+        })
     } catch (error) {
         console.log(error);
         return {

@@ -18,9 +18,9 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    roles: {
-        type: Array,
-        default: [0],
+    role: {
+        type: Number,
+        default: 0,
     },
 }, {
     timestamps: true,

@@ -12,4 +12,7 @@ router.route('/register')
 router.route('/forgot-password')
     .post(controller.forgotPwd);
 
+router.route('/users')
+    .get(controller.getAllUser);
+
 export default router;

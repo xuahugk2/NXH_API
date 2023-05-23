@@ -90,6 +90,12 @@ const controller = {
             const users = await userModel.find();
 
             return res.status(200).json(users);
+            // const user = await userModel.findOne({ email: 'user@gmail.com' })
+            // let data = [];
+            // for (let i = 0; i < 100; i++) {
+            //     data.push(user);
+            // }
+            // return res.status(200).json(data);
 
         } catch (error) {
             return res.status(500).json({

@@ -2,38 +2,40 @@ import nodemailer from 'nodemailer';
 
 export const sendMail = async () => {
     try {
-        const account = await nodemailer.createTestAccount();
-        const adminEmail = 'hungnx.482@gmail.com'
+        console.log(process.env);
 
-        const transporter = nodemailer.createTransport({
-            host: account.smtp.host,
-            port: account.smtp.port,
-            secure: account.smtp.secure,
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
             auth: {
-                user: account.user,
-                pass: account.pass
+                type: 'OAuth2',
+                user: process.env.MAIL_USERNAME,
+                pass: process.env.MAIL_PASSWORD,
+                clientId: process.env.OAUTH_CLIENT_ID,
+                clientSecret: process.env.OAUTH_CLIENT_SECRET,
+                refreshToken: process.env.OAUTH_REFRESH_TOKEN
             }
-        })
+        });
 
-        const options = {
-            from: "Xuan Hung",
-            to: adminEmail,
-            subject: "Test Nodemailer",
-            html: "Test content"
-        }
+        const mailOptions = {
+            from: process.env.MAIL_USERNAME,
+            to: 'hungnx.482@gmail.com',
+            subject: 'Nodemailer Project',
+            text: 'Hi from your nodemailer project',
+        };
 
-        transporter.sendMail(options, (err, info) => {
+        transporter.sendMail(mailOptions, (err, info) => {
             console.log({ err, info });
             if (err) {
                 return {
                     status: 503,
                     message: 'Reset password failed.'
                 };
+            } else {
+                return {
+                    status: 200,
+                    message: 'Please, check your email to reset the password.'
+                };
             }
-            return {
-                status: 200,
-                message: 'Please, check your email to reset the password.'
-            };
         })
     } catch (error) {
         console.log(error);

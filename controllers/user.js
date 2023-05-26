@@ -161,7 +161,39 @@ const controller = {
                 data: undefined,
             });
         }
-    }
+    },
+    update: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { firstName, lastName, email, password } = req.body;
+
+            const user = await userModel.findById(id);
+
+            if (!user) {
+                return res.status(500).json({
+                    message: 'User is not exists.',
+                    data: undefined,
+                });
+            }
+
+            await userModel.findByIdAndUpdate(id, {
+                firstName, lastName, email, password,
+            });
+
+            const users = await userModel.find();
+
+            return res.status(200).json({
+                message: 'Update user success.',
+                data: users,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                message: 'Update user failed.',
+                data: undefined,
+            });
+        }
+    },
 };
 
 export default controller;

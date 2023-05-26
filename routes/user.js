@@ -16,6 +16,7 @@ router.route('/users/list')
     .get(controller.getAllUser);
 
 router.route('/users/:id')
-    .delete(controller.delete);
+    .delete(controller.delete)
+    .put(controller.update);
 
 export default router;

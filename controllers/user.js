@@ -132,6 +132,35 @@ const controller = {
                 data: undefined,
             });
         }
+    },
+    delete: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const user = await userModel.findById(id);
+
+            if (!user) {
+                return res.status(500).json({
+                    message: 'User has been already deleted.',
+                    data: undefined,
+                });
+            }
+
+            await userModel.findByIdAndDelete(id);
+
+            const users = await userModel.find();
+
+            return res.status(200).json({
+                message: 'Delete user success.',
+                data: users,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                message: 'Delete user failed.',
+                data: undefined,
+            });
+        }
     }
 };
 

@@ -15,4 +15,7 @@ router.route('/forgot-password')
 router.route('/users/list')
     .get(controller.getAllUser);
 
+router.route('/users/:id')
+    .delete(controller.delete);
+
 export default router;

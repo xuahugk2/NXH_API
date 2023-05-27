@@ -32,7 +32,7 @@ const controller = {
             }
 
             return res.status(200).json({
-                message: 'OK',
+                message: undefined,
                 data: user,
             });
         } catch (error) {
@@ -69,13 +69,51 @@ const controller = {
             await newUser.save();
 
             return res.status(200).json({
-                message: 'OK',
+                message: undefined,
                 data: newUser,
             });
 
         } catch (error) {
             return res.status(500).json({
                 message: 'Register failed.',
+                data: undefined,
+            });
+        }
+    },
+    create: async (req, res) => {
+        try {
+            const { reqId, email, password, firstName, lastName, role } = req.body;
+
+            const user = await userModel.findOne({ email });
+
+            if (user) {
+                return res.status(503).json({
+                    message: 'Email has already been registered.',
+                    data: undefined,
+                });
+            }
+
+            if (password.length < 8 || password.length > 64) {
+                return res.status(503).json({
+                    message: 'Password length must between 8 and 64 characters.',
+                    data: undefined,
+                });
+            }
+
+            const hashPassword = bcrypt.hashSync(password, 10);
+
+            const newUser = new userModel({ email, password: hashPassword, firstName, lastName, role });
+
+            await newUser.save();
+
+            return res.status(200).json({
+                message: 'Create user success',
+                data: undefined,
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Create user failed.',
                 data: undefined,
             });
         }
@@ -122,7 +160,7 @@ const controller = {
             const users = await userModel.find();
 
             return res.status(200).json({
-                message: 'OK',
+                message: undefined,
                 data: users,
             });
 
@@ -165,10 +203,10 @@ const controller = {
     update: async (req, res) => {
         try {
             const { id } = req.params;
-            const { reqId, firstName, lastName, email, password } = req.body;
+            const { reqId, firstName, lastName, email, password, role } = req.body;
 
             const reqUser = await userModel.findById(reqId);
-            if (!(reqUser && reqUser.role === 1)) {
+            if (!(reqUser && reqUser.role === 1) || !(reqId === id)) {
                 return res.status(503).json({
                     message: 'User do not have authority.',
                     data: undefined,
@@ -185,7 +223,7 @@ const controller = {
             }
 
             await userModel.findByIdAndUpdate(id, {
-                firstName, lastName, email, password,
+                firstName, lastName, email, password, role,
             });
 
             const users = await userModel.find();

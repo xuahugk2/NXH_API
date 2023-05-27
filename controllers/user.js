@@ -140,7 +140,7 @@ const controller = {
             const user = await userModel.findById(id);
 
             if (!user) {
-                return res.status(500).json({
+                return res.status(503).json({
                     message: 'User has been already deleted.',
                     data: undefined,
                 });
@@ -165,12 +165,20 @@ const controller = {
     update: async (req, res) => {
         try {
             const { id } = req.params;
-            const { firstName, lastName, email, password } = req.body;
+            const { reqId, firstName, lastName, email, password } = req.body;
+
+            const reqUser = await userModel.findById(reqId);
+            if (!(reqUser && reqUser.role === 1)) {
+                return res.status(503).json({
+                    message: 'User do not have authority.',
+                    data: undefined,
+                });
+            }
 
             const user = await userModel.findById(id);
 
             if (!user) {
-                return res.status(500).json({
+                return res.status(503).json({
                     message: 'User is not exists.',
                     data: undefined,
                 });

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import userModel from '../models/user.js';
+import userModel from '../models/userModel.js';
 import { sendMail } from '../utils/sendMailUtil.js';
 
 const controller = {

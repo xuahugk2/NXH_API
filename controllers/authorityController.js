@@ -1,5 +1,5 @@
 
-import authorityModel from '../models/authority.js';
+import authorityModel from '../models/authorityModel.js';
 
 const controller = {
     create: async (req, res) => {

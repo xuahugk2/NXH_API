@@ -2,9 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import userRouter from './routes/user.js';
-import authRouter from './routes/auth.js';
-import authorityRouter from './routes/authority.js';
+import userRouter from './routes/userRouter.js';
+import authRouter from './routes/authRouter.js';
+import authorityRouter from './routes/authorityRouter.js';
 
 dotenv.config();
 

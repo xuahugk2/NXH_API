@@ -16,12 +16,12 @@ const controller = {
                 });
             }
 
-            if (user.role !== 1) {
-                return res.status(503).json({
-                    message: 'Your donn\'t have authority to access.',
-                    data: undefined,
-                });
-            }
+            // if (user.role !== 1) {
+            //     return res.status(503).json({
+            //         message: 'Your do not have authority to access.',
+            //         data: undefined,
+            //     });
+            // }
 
             const checkPassword = bcrypt.compareSync(password, user.password);
             if (!checkPassword) {

@@ -3,17 +3,35 @@ import userModel from '../models/userModel.js';
 import { sendMail } from '../utils/sendMailUtil.js';
 
 const controller = {
-    create: async (req, res) => {
+    getAllUser: async (req, res) => {
         try {
-            const { reqId, email, password, firstName, lastName, role } = req.body;
+            const { _id } = req.query;
+            const user = await userModel.findById(_id);
 
-            const reqUser = await userModel.findById(reqId);
-            if (!(reqUser && reqUser.role === 1)) {
+            if (!(user && user.role === 1)) {
                 return res.status(503).json({
                     message: 'User do not have authority.',
                     data: undefined,
                 });
             }
+
+            const users = await userModel.find();
+
+            return res.status(200).json({
+                message: undefined,
+                data: users,
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Get list of user failed.',
+                data: undefined,
+            });
+        }
+    },
+    create: async (req, res) => {
+        try {
+            const { email, password, firstName, lastName, role } = req.body;
 
             const user = await userModel.findOne({ email });
 
@@ -49,44 +67,10 @@ const controller = {
             });
         }
     },
-    getAllUser: async (req, res) => {
-        try {
-            const { _id } = req.query;
-            const user = await userModel.findById(_id);
-
-            if (!(user && user.role === 1)) {
-                return res.status(503).json({
-                    message: 'User do not have authority.',
-                    data: undefined,
-                });
-            }
-
-            const users = await userModel.find();
-
-            return res.status(200).json({
-                message: undefined,
-                data: users,
-            });
-
-        } catch (error) {
-            return res.status(500).json({
-                message: 'Get list of user failed.',
-                data: undefined,
-            });
-        }
-    },
     update: async (req, res) => {
         try {
             const { id } = req.params;
-            const { reqId, firstName, lastName, email, password, role } = req.body;
-
-            const reqUser = await userModel.findById(reqId);
-            if (!(reqUser && reqUser.role === 1)) {
-                return res.status(503).json({
-                    message: 'User do not have authority.',
-                    data: undefined,
-                });
-            }
+            const { firstName, lastName, email, password, role } = req.body;
 
             const user = await userModel.findById(id);
 

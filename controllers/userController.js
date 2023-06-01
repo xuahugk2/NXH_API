@@ -5,16 +5,6 @@ import { sendMail } from '../utils/sendMailUtil.js';
 const controller = {
     getAllUser: async (req, res) => {
         try {
-            const { _id } = req.query;
-            const user = await userModel.findById(_id);
-
-            if (!(user && user.role === 1)) {
-                return res.status(503).json({
-                    message: 'User do not have authority.',
-                    data: undefined,
-                });
-            }
-
             const users = await userModel.find();
 
             return res.status(200).json({

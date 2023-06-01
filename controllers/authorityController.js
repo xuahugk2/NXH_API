@@ -4,17 +4,6 @@ import authorityModel from '../models/authorityModel.js';
 const controller = {
     getAll: async (req, res) => {
         try {
-            const { _id } = req.query;
-
-            const user = await userModel.findById(_id);
-
-            if (!(user && user.role === 1)) {
-                return res.status(503).json({
-                    message: 'User do not have authority.',
-                    data: undefined,
-                });
-            }
-
             const authorities = await authorityModel.find();
             return res.status(200).json({
                 message: undefined,

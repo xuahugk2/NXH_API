@@ -5,7 +5,7 @@ import { authUser, authAdmin } from '../middleware/middleware.js';
 const router = express.Router();
 
 router.route('/list')
-    .get(controller.getAllUser);
+    .get(authUser, authAdmin, controller.getAllUser);
 
 router.route('/create')
     .post(authUser, authAdmin, controller.create);

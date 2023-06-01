@@ -3,9 +3,8 @@ import userModel from '../models/userModel.js';
 
 export const authUser = async (req, res, next) => {
     try {
-        const { reqId } = req.body;
-
-        const user = await userModel.findById(reqId);
+        const { authorization } = req.headers;
+        const user = await userModel.findById(authorization);
 
         if (!(user && user._id.toString())) {
             return res.status(503).json({
@@ -27,9 +26,8 @@ export const authUser = async (req, res, next) => {
 
 export const authAdmin = async (req, res, next) => {
     try {
-        const { reqId } = req.body;
-
-        const user = await userModel.findById(reqId);
+        const { authorization } = req.headers;
+        const user = await userModel.findById(authorization);
 
         if (!(user && user._id.toString() && user.role === 1)) {
             return res.status(503).json({

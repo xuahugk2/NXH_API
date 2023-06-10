@@ -1,11 +1,15 @@
 import mongoose from 'mongoose';
 
 const schema = new mongoose.Schema({
-    authorityId: {
-        type: Number,
+    codeClass: {
+        type: String,
         required: true,
     },
-    name: {
+    codeName: {
+        type: String,
+        required: true,
+    },
+    codeValue: {
         type: String,
         required: true,
     },
@@ -13,4 +17,4 @@ const schema = new mongoose.Schema({
     timestamps: true,
 });
 
-export default mongoose.model('authority', schema);
+export default mongoose.model('code', schema);

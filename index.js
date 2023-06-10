@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import userRouter from './routes/userRouter.js';
 import authRouter from './routes/authRouter.js';
-import authorityRouter from './routes/authorityRouter.js';
+import codeRouter from './routes/codeRouter.js';
 
 dotenv.config();
 
@@ -16,8 +16,8 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 // User router
 app.use('/api/users', userRouter);
-// Authority router
-app.use('/api/authority', authorityRouter);
+// Code router
+app.use('/api/code', codeRouter);
 
 mongoose.connect(process.env.DATABASE_URL);
 mongoose.connection.once('connected', () => {

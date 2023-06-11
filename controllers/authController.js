@@ -15,7 +15,7 @@ const controller = {
                 });
             }
 
-            if (user.role !== 1) {
+            if (user.role !== "1") {
                 return res.status(503).json({
                     message: 'Your do not have authority to access.',
                     data: undefined,
